@@ -112,6 +112,7 @@ fn make_package_json_file(filepath: String) {
     \"esbuild\": \"^0.21.5\",
     \"esbuild-sass-plugin\": \"^3.3.1\",
     \"postcss\": \"^8.4.38\",
+    \"sass\": \"^1.77.6\",
     \"tailwindcss\": \"^3.4.4\",
     \"toml\": \"^3.0.0\"
   }
@@ -125,18 +126,18 @@ fn make_html_file(filepath: String, app_name: String) {
   let _ =
     "
 <!doctype html>
-<html lang='en'>
+<html lang='en' class='h-full'>
   <head>
-    <meta charset='utf-8' />
+    <meta charset='UTF-8' />
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
 
-    <title>🚧 {app_name}</title>
+	<title>🚧 {app_name}</title>
 
-    <link rel='stylesheet' href='./css/{app_name}.css'>
+    <link rel='stylesheet' href='./css/app.css'>
     <script type='module' src='./js/entry.mjs'></script>
   </head>
 
-  <body>
+  <body class='h-full bg-gray-900'>
     <div id='app'></div>
   </body>
 </html>
@@ -179,7 +180,10 @@ fn make_build_script(filepath: String) {
   let _ =
     "
 import esbuild from 'esbuild';
-import { sassPlugin } from 'esbuild-sass-plugin';
+import * as sass from 'sass';
+import postcss from 'postcss';
+import tailwindcss from 'tailwindcss';
+import autoprefixer from 'autoprefixer';
 import path from 'path';
 import fs from 'fs';
 import toml from 'toml';
@@ -189,6 +193,19 @@ import { promises as fsPromises } from 'fs';
 async function readConfig() {
 	const configContent = await fsPromises.readFile('gleam.toml', 'utf-8');
 	return toml.parse(configContent);
+}
+
+async function buildCSS(inputFile, outputFile) {
+	// Compile sass to css
+	const result = await sass.compileAsync(inputFile);
+	const css = result.css;
+
+	// Process CSS with PostCSS (TailwindCSS and Autoprefixer)
+	const postcssResult = await postcss([tailwindcss, autoprefixer]).process(css, { from: inputFile, to: outputFile });
+	await fsPromises.writeFile(outputFile, postcssResult.css);
+	if (postcssResult.map) {
+		await fsPromises.writeFile(outputFile + '.map', postcssResult.map.toString());
+	}
 }
 
 async function build() {
@@ -217,15 +234,7 @@ async function build() {
 		});
 
 		// Build CSS
-		await esbuild.build({
-			entryPoints: [cssInputFile],
-			bundle: true,
-			minify: true,
-			outfile: cssOutputFile,
-			plugins: [
-				sassPlugin(),
-			]
-		});
+		await buildCSS(cssInputFile, cssOutputFile);
 
 		const htmlSource = path.resolve('src/index.html');
 		const htmlDest = path.resolve(outputDir, 'index.html');
