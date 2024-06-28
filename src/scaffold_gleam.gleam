@@ -95,8 +95,8 @@ fn make_html_file(filepath: String, app_name: String) {
 
     <title>🚧 {app_name}</title>
 
-    <link rel='stylesheet' href='/priv/static/{app_name}.css'>
-    <script type='module' src='/priv/static/entry.mjs'></script>
+    <link rel='stylesheet' href='./css/{app_name}.css'>
+    <script type='module' src='./js/entry.mjs'></script>
   </head>
 
   <body>

@@ -37,6 +37,13 @@ Create the scaffolding, run from the root of your new project
 
 ```sh
 scaffold
+npm install
 ```
+Then run the watcher
+```sh
+npm run watch
+```
+
+then visit http://localhost:1234 on your browser
 
 Further documentation can be found at <https://hexdocs.pm/scaffold_gleam>.
