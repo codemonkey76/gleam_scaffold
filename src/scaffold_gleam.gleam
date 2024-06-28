@@ -133,7 +133,7 @@ fn make_html_file(filepath: String, app_name: String) {
 
 	<title>🚧 {app_name}</title>
 
-    <link rel='stylesheet' href='./css/app.css'>
+    <link rel='stylesheet' href='./css/{app_name}.css'>
     <script type='module' src='./js/entry.mjs'></script>
   </head>
 
