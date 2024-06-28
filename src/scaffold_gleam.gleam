@@ -14,7 +14,7 @@ pub fn main() {
   let _ = simplifile.create_directory("src/styles")
   make_styles_template("src/styles/app.scss")
   make_tailwind_config("tailwind.config.js")
-  make_postcss_config()
+  make_postcss_config("postcss.config.js")
 
   // 3. Make scripts
   make_compile_script("scripts/compile.js")
