@@ -10,6 +10,10 @@ pub fn main() {
   // 2. Make scripts folder
   let _ = simplifile.create_directory("scripts")
 
+  // 3. Make styles folder
+  let _ = simplifile.create_directory("src/styles")
+  make_styles_template("src/styles/app.scss")
+
   // 3. Make scripts
   make_compile_script("scripts/compile.js")
   make_build_script("scripts/build.js")
@@ -35,6 +39,15 @@ fn get_app_name() -> Result(String, Nil) {
     tom.get_string(parsed, ["name"]) |> result.map_error(fn(_) { Nil }),
   )
   Ok(app_name)
+}
+
+fn make_styles_template(filepath: String) {
+  let _ =
+    "
+
+    "
+    |> simplifile.write(to: filepath, contents: _)
+  Nil
 }
 
 fn make_entry_file(filepath: String, app_name: String) {
