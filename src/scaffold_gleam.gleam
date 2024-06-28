@@ -13,6 +13,8 @@ pub fn main() {
   // 3. Make styles folder
   let _ = simplifile.create_directory("src/styles")
   make_styles_template("src/styles/app.scss")
+  make_tailwind_config("tailwind.config.js")
+  make_postcss_config()
 
   // 3. Make scripts
   make_compile_script("scripts/compile.js")
@@ -41,10 +43,42 @@ fn get_app_name() -> Result(String, Nil) {
   Ok(app_name)
 }
 
+fn make_tailwind_config(filepath: String) {
+  let _ =
+    "
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [\"./src/**/*.{html,js,gleam}\"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+  "
+    |> simplifile.write(to: filepath, contents: _)
+  Nil
+}
+
+fn make_postcss_config(filepath: String) {
+  let _ =
+    "
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  }
+}
+    "
+    |> simplifile.write(to: filepath, contents: _)
+  Nil
+}
+
 fn make_styles_template(filepath: String) {
   let _ =
     "
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
     "
     |> simplifile.write(to: filepath, contents: _)
   Nil
@@ -72,10 +106,13 @@ fn make_package_json_file(filepath: String) {
     \"watch\": \"node scripts/watch.js\"
   },
   \"devDependencies\": {
+    \"autoprefixer\": \"^10.4.19\",
     \"chokidar\": \"^3.6.0\",
     \"deno\": \"^0.1.1\",
     \"esbuild\": \"^0.21.5\",
     \"esbuild-sass-plugin\": \"^3.3.1\",
+    \"postcss\": \"^8.4.38\",
+    \"tailwindcss\": \"^3.4.4\",
     \"toml\": \"^3.0.0\"
   }
 }
