@@ -1,25 +1,42 @@
-# scaffold
+# Scaffold
 
-[![Package Version](https://img.shields.io/hexpm/v/scaffold)](https://hex.pm/packages/scaffold)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/scaffold/)
+[![Package Version](https://img.shields.io/hexpm/v/scaffold_gleam)](https://hex.pm/packages/scaffold_gleam)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/scaffold_gleam/)
+
+## Installation
+
+Clone the repo
+```sh
+git clone git@github.com:codemonkey76/scaffold_gleam
+```
+
+Compile the program into an executable
+```sh
+cd scaffold_gleam
+gleam run -m gleescript
+```
+
+Move to somewhere in your path, e.g. `/usr/local/bin`
+```sh
+sudo mv scaffold_gleam /usr/local/bin/scaffold
+```
+
+## Running the app
+
+Start a new gleam repo
 
 ```sh
-gleam add scaffold
-```
-```gleam
-import scaffold
-
-pub fn main() {
-  // TODO: An example of the project in use
-}
+gleam new my_application
 ```
 
-Further documentation can be found at <https://hexdocs.pm/scaffold>.
+Configure as javascript target
 
-## Development
+Edit your gleam.toml and add `target = "javascript"`
+
+Create the scaffolding, run from the root of your new project
 
 ```sh
-gleam run   # Run the project
-gleam test  # Run the tests
-gleam shell # Run an Erlang shell
+scaffold
 ```
+
+Further documentation can be found at <https://hexdocs.pm/scaffold_gleam>.
